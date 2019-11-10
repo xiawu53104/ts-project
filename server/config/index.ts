@@ -18,5 +18,6 @@ const  PRODUCTION_CONFIG = {
 }
 
 export const config = {
-  DATABASE: Util.isProduction() ? PRODUCTION_CONFIG : LOCAL_CONFIG
+  DATABASE: Util.isProduction() ? PRODUCTION_CONFIG : LOCAL_CONFIG,
+  SECRET: env.SECRET || '',
 }
