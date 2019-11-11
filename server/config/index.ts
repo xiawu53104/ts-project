@@ -1,5 +1,5 @@
 import { env } from 'process'
-import { Util } from '../src/util/util'
+import { Util } from '../src/util/Util'
 
 const LOCAL_CONFIG = {
   MYSQL_HOST: '127.0.0.1',

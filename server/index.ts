@@ -1,7 +1,7 @@
 import cluster from 'cluster'
 import os from 'os'
 import { Server } from './src/Server'
-import { Util } from './src/util/util'
+import { Util } from './src/util/Util'
 
 if (cluster.isMaster) {
   console.log(`主进程 ${process.pid} 正在运行`)

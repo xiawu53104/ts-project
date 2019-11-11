@@ -1,19 +1,21 @@
-import { Context, Response } from 'koa'
-import { Controller } from './controller'
+import { Context } from 'koa'
 import { JWTService } from '../services'
+import { controller, http, auth } from '../decorator'
 
-export class JWTController extends Controller {
-  private jwtService: JWTService;
+@controller()
+export default class JWTController {
+  private jwtService: JWTService = new JWTService()
 
-  constructor (ctx: Context) {
-    super(ctx)
-    this.jwtService = new JWTService()
+  @http('/jwt', 'get')
+  public async getToken (ctx: Context) {
+    const payload: { name: string, role: string} = ctx.request.query
+    const token = await this.jwtService.signToken(payload)
+    ctx.body = { token }
   }
 
-  public async getToken () {
-    console.log(this.ctx.request.query)
-    const payload = this.ctx.request.query
-    const token = await this.jwtService.signToken(payload)
-    this.ctx.response.body = token
+  @auth()
+  @http('/test', 'get')
+  public async test (ctx: Context) {
+    ctx.body = 'hello'
   }
 }

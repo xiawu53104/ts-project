@@ -1,1 +1,0 @@
-export { JWTRoute } from './Jwt.route'

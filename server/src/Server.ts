@@ -1,50 +1,43 @@
+import fs from 'fs'
+import path from 'path'
 import Koa from 'koa'
-import koaJwt from 'koa-jwt'
 import KoaRouter from 'koa-router'
-import * as ROUTERS from './routes'
-import { config } from '../config'
+import json from 'koa-json'
+import { METHOD } from './decorator/http'
+import { verify } from './middlewares'
 
 export class Server {
   private readonly app: Koa;
+  private router: KoaRouter;
 
   constructor () {
     this.app = new Koa()
+    this.router = new KoaRouter()
+    this.buildRouter()
     this.init()
   }
 
-  private init (): void {
-    // const router: KoaRouter = new KoaRouter()
-    // router.get('/', async (ctx) => {
-    //   ctx.body = 'hello koa'
-    // })
-    // this.app.use(router.routes())
-
-    // let unlessPath: RegExp[]
-    // for (let key in ROUTERS) {
-    //   const r = new ROUTERS[key]()
-    //   if (!r.authorized) {
-    //     const reg = new RegExp('^' + r.prefix)
-    //     unlessPath.push(reg)
-    //   }
-    //   this.app.use(r.router.routes())
-    // }
-    let r = new ROUTERS.JWTRoute()
-    this.app.use(r.router.routes())
-    this.app.use((ctx, next) => {
-      return next().catch((err) => {
-        if (401 == err.status) {
-          ctx.status = 401
-          ctx.body = 'Protected resource, use Authorization header to get access\n'
-        } else {
-          throw err
+  private buildRouter () {
+    const dir: string = './controllers'
+    const files: string[] = fs.readdirSync(path.resolve(__dirname, dir))
+    for (let fileName of files) {
+      if (fileName.endsWith('\.controller\.ts')) {
+        const Controller = require(dir + '/' + fileName).default
+        for (let item of Controller._routes) {
+          let path: string = Controller._prefix + item.path
+          const middlewares: Array<any> = [item.handler.bind(new Controller())]
+          if (Controller._auth && Controller._auth.includes(item.fnName)) {
+            middlewares.unshift(verify)
+          }
+          this.router[item.method.toLowerCase() as METHOD](path, ...middlewares)
         }
-      })
-    })
-    this.app.use(koaJwt({ secret: config.SECRET }).unless({
-      path: [
-        /^\/jwt/
-      ]
-    }))
+      }
+    }
+  }
+
+  private init (): void {
+    this.app.use(this.router.routes())
+    this.app.use(json())
   }
 
   public start (): void {
