@@ -9,7 +9,6 @@ interface Payload {
 
 export async function verify (ctx: Context, next: Next) {
   const token: string = ctx.header.authorization
-  console.log(token)
   if (token) {
     try {
       let paylaod: Payload = await jwt.verify(token, config.SECRET) as Payload
