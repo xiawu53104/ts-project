@@ -1,6 +1,6 @@
 import cluster from 'cluster'
 import os from 'os'
-import { Server } from './src/server'
+import { Server } from './src/Server'
 import { Util } from './src/util/util'
 
 if (cluster.isMaster) {
