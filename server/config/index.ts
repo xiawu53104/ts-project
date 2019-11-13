@@ -2,7 +2,7 @@ import { env } from 'process'
 import { Util } from '../src/util/Util'
 
 const LOCAL_CONFIG = {
-  MYSQL_HOST: '127.0.0.1',
+  MYSQL_HOST: 'localhost',
   MYSQL_PORT: 3306,
   MYSQL_DB: 'test',
   MYSQL_USER: 'root',
@@ -11,7 +11,7 @@ const LOCAL_CONFIG = {
 
 const  PRODUCTION_CONFIG = {
   MYSQL_HOST: env.MYSQL_HOST,
-  MYSQL_PORT: env.MYSQL_PORT,
+  MYSQL_PORT: Number(env.MYSQL_PORT),
   MYSQL_DB: env.MYSQL_DB,
   MYSQL_USER: env.MYSQL_USER,
   MYSQL_PASSWORD: env.MYSQL_PASSWORD

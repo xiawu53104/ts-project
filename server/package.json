@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon",
-    "test": "ts-node ./src/routes/index.ts"
+    "test": "ts-node ./src/services/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,15 +13,20 @@
   "dependencies": {
     "@types/jsonwebtoken": "^8.3.5",
     "@types/koa": "^2.0.52",
+    "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-json": "^2.0.18",
     "@types/koa-router": "^7.0.42",
+    "@types/mysql": "^2.15.8",
+    "@types/node": "^12.12.7",
+    "chalk": "^3.0.0",
     "dotenv": "^8.2.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.11.0",
+    "koa-bodyparser": "^4.2.1",
     "koa-json": "^2.0.2",
     "koa-router": "^7.4.0",
+    "mysql": "^2.17.1",
     "ts-node": "^8.4.1",
-    "typeorm": "^0.2.20",
     "typescript": "^3.7.2"
   },
   "devDependencies": {

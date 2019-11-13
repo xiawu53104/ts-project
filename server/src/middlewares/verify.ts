@@ -12,7 +12,7 @@ export async function verify (ctx: Context, next: Next) {
   if (token) {
     try {
       let paylaod: Payload = await jwt.verify(token, config.SECRET) as Payload
-      ctx.user = {
+      ctx.state.user = {
         name: paylaod.name,
         role: paylaod.role
       }

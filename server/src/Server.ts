@@ -3,8 +3,9 @@ import path from 'path'
 import Koa from 'koa'
 import KoaRouter from 'koa-router'
 import json from 'koa-json'
+import bodyparser from 'koa-bodyparser'
 import { METHOD } from './decorator/http'
-import { verify } from './middlewares'
+import { verify, log } from './middlewares'
 
 export class Server {
   private readonly app: Koa;
@@ -21,8 +22,10 @@ export class Server {
     const dir: string = './controllers'
     const files: string[] = fs.readdirSync(path.resolve(__dirname, dir))
     for (let fileName of files) {
-      if (fileName.endsWith('\.controller\.ts')) {
-        const Controller = require(dir + '/' + fileName).default
+      if (fileName.endsWith('\.ts')) {
+        const expt = require(dir + '/' + fileName)
+        const key = Object.keys(expt)[0]
+        const Controller = expt[key]
         for (let item of Controller._routes) {
           let path: string = Controller._prefix + item.path
           const middlewares: Array<any> = [item.handler.bind(new Controller())]
@@ -35,9 +38,11 @@ export class Server {
     }
   }
 
-  private init (): void {
-    this.app.use(this.router.routes())
+  private async init () {
     this.app.use(json())
+    this.app.use(bodyparser())
+    this.app.use(log)
+    this.app.use(this.router.routes())
   }
 
   public start (): void {

@@ -3,7 +3,7 @@ import { JWTService } from '../services'
 import { controller, http, auth } from '../decorator'
 
 @controller()
-export default class JWTController {
+export class JWTController {
   private jwtService: JWTService = new JWTService()
 
   @http('/jwt', 'get')
