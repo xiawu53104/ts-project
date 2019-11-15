@@ -4,7 +4,7 @@ import { config } from '../../config'
 
 interface Payload {
   name:string;
-  role: string
+  id: number
 }
 
 export async function verify (ctx: Context, next: Next) {
@@ -14,7 +14,7 @@ export async function verify (ctx: Context, next: Next) {
       let paylaod: Payload = await jwt.verify(token, config.SECRET) as Payload
       ctx.state.user = {
         name: paylaod.name,
-        role: paylaod.role
+        id: paylaod.id
       }
       next()
     } catch (err) {

@@ -4,7 +4,7 @@ export class Util {
   }
 
   public static formatDate (date: Date, fmt: string): string {
-    let m = new Map()
+    let m: Map<string, number> = new Map<string, number>()
     m.set("M+", date.getMonth() + 1)
     m.set("d+", date.getDate())
     m.set("h+", date.getHours())
