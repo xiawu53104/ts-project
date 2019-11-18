@@ -12,7 +12,7 @@ export async function log (ctx: Context, next: Next) {
     function base (level: string, message?: string): void {
       console.log(`[${logger(level)}][${Util.formatDate(new Date(), 'yyyy-MM-dd hh:mm:ss')}] "HTTP/1.1" "${ctx.method}" "${ctx.url}" "${userAgent}" ${logger(status)} ${rSize} ${(message || '') && logger(message)}`)
     }
-    status < 400 ? base('INFO') : base('ERROR', ctx.response.body || ctx.response.message)
+    status < 400 ? base('INFO') : base('ERROR', JSON.stringify(ctx.response.body || ctx.response.message))
   } catch (err) {
     console.log(err)
   }

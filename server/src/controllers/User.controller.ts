@@ -39,17 +39,24 @@ export class UserController {
     }
     try {
       let user: User = await this.userSerive.findOne(data)
-      let token: string = this.jwtService.signToken(
-        {
-          name: user.name,
-          id: user.id
-        },
-        { expiresIn: 60 }
-      )
-      this.userSerive.udateUserToken(token, user)
-      ctx.body = {
-        message: 'ok',
-        data: token
+      if (user) {
+        let token: string = this.jwtService.signToken(
+          {
+            name: user.name,
+            id: user.id
+          },
+          { expiresIn: 60 }
+        )
+        this.userSerive.udateUserToken(token, user)
+        ctx.body = {
+          result: true,
+          data: token
+        }
+      } else {
+        ctx.body = {
+          result: false,
+          message: '用户名或密码错误'
+        }
       }
     } catch (err) {
       console.log(err)

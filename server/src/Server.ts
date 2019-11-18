@@ -4,6 +4,8 @@ import Koa from 'koa'
 import KoaRouter from 'koa-router'
 import json from 'koa-json'
 import bodyparser from 'koa-bodyparser'
+import compress from 'koa-compress'
+import staticServer from 'koa-static'
 import { METHOD } from './decorator/http'
 import { verify, log } from './middlewares'
 
@@ -38,9 +40,13 @@ export class Server {
     }
   }
 
-  private async init () {
+  private init () {
     this.app.use(json())
     this.app.use(bodyparser())
+    this.app.use(compress({
+      threshold: 2048
+    }))
+    this.app.use(staticServer(path.resolve(__dirname, '../static')))
     this.app.use(log)
     this.app.use(this.router.routes())
   }

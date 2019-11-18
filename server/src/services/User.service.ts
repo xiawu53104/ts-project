@@ -9,9 +9,8 @@ export class UserService extends Service {
 
   public async findOne (data: { name: string, password: string }): Promise<User> {
     const sql: string = `SELECT * FROM user WHERE name = ? AND password = ?`
-    let user: User = await this.execSql(sql, [data.name, data.password]) as User
-    console.log(user)
-    return user
+    let users: Array<User> = await this.execSql(sql, [data.name, data.password]) as Array<User>
+    return users[0]
   }
 
   public udateUserToken (token: string, user: User) {
