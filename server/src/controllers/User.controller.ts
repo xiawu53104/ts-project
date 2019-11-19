@@ -18,7 +18,7 @@ export class UserController {
       let md5: crypto.Hash = crypto.createHash('md5')
       user.password = md5.update(payload.password).digest('base64')
       user.token = ''
-      this.userSerive.saveUser(user)
+      this.userSerive.createUser(user)
       ctx.body = {
         message: 'ok',
         user

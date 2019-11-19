@@ -30,6 +30,7 @@ export default class Login extends Vue {
   public async submit (): Promise<void> {
     let res = await this.service.doLogin(this.formData)
     console.log(res)
+    window.sessionStorage.setItem('token', res.data)
   }
 }
 </script>

@@ -1,6 +1,6 @@
 import { Context, Next } from 'koa'
 import chalk from 'chalk'
-import { Util } from '../util/Util'
+import { Util } from '../base/Util'
 
 export async function log (ctx: Context, next: Next) {
   try {
